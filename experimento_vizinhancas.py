@@ -1,16 +1,4 @@
-#!/usr/bin/env python3
-"""Experimento da T2: comparação estatística das vizinhanças do Greedy Descent.
 
-Uso:
-    python experimento_vizinhancas.py manutencao_pequena.txt manutencao_media.txt manutencao_grande.txt
-
-O script grava quatro CSVs: resultados brutos, resumo descritivo, testes estatísticos
-(Friedman + Wilcoxon pareado com correção de Holm) e benchmark de custo por movimento.
-
-Por padrão, usa Best Improvement para isolar o efeito da vizinhança. Os mesmos seeds
-são usados nas três vizinhanças de cada instância; assim, a primeira permutação aleatória
-é igual entre tratamentos, e a comparação é analisada como pareada.
-"""
 
 from __future__ import annotations
 
@@ -82,11 +70,8 @@ def holm(p_valores: list[float]) -> list[float]:
 
 def benchmark_movimentos(caminho: str, nome_instancia: str, repeticoes: int,
                          seed_base: int) -> list[dict]:
-    """Mede o tempo médio da avaliação incremental de cada movimento.
-
-    Cada vizinhança é avaliada em uma permutação aleatória comum por seed. A lista de
-    movimentos e os prefixos são preparados antes da cronometragem. O tempo inclui a
-    função avaliar_movimento, mas não inclui a criação/shuffle da lista de movimentos.
+    """
+    Mede o tempo médio da avaliação incremental de cada movimento.
     """
     linhas = []
     for r in range(repeticoes):
@@ -145,8 +130,6 @@ def calcular_testes_por_instancia(instancia: str, n: int, estrategia: str,
 
     vizinhs = list(VIZINHANCAS)
     seeds_comuns = sorted(set.intersection(*(set(por_viz_seed[v]) for v in vizinhs)))
-    # Para métricas de ótimos locais confirmados, exclui apenas os blocos em que
-    # alguma vizinhança não chegou a concluir uma varredura completa.
     seeds_comuns = [
         seed for seed in seeds_comuns
         if all(math.isfinite(por_viz_seed[v][seed]) for v in vizinhs)

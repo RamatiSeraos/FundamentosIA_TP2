@@ -1,18 +1,10 @@
-"""Algoritmos de busca local para ProblemaManutencao.
-
-O problema (dados, funcao de custo e movimentos) fica em problema.py.
-Este modulo implementa Greedy Descent com random restart sem depender dos
- detalhes internos da manutencao.
-"""
-
 from problema import OrcamentoEsgotado, VIZINHANCAS
 
 ESTRATEGIAS_GREEDY = ("best", "first")
 
 
 def greedy_descent(problema, estrategia="best", semente=None, orcamento=50_000):
-    """Executa Greedy Descent com Random Restart.
-
+    """
     Parametros
     ---------
     problema : ProblemaManutencao
@@ -29,18 +21,18 @@ def greedy_descent(problema, estrategia="best", semente=None, orcamento=50_000):
     Retorno
     -------
     dict
-        Melhor solucao/custo global da execucao, contador, historico, quantidade
-        de reinicios e resumo dos otimos locais encontrados.
-
-    Observacoes
-    -----------
-    - Cada avaliacao de solucao ou sucessor e contabilizada por problema.py.
-    - A avaliacao incremental pode podar vizinhos que certamente nao melhoram
-      a solucao corrente; por isso, o valor devolvido para esses vizinhos pode
-      ser apenas um limite inferior/estimativa suficiente para rejeita-los.
-    - Um otimo local so e registrado depois de examinar toda a vizinhanca sem
-      encontrar melhoria. Se o orcamento acabar no meio da varredura, ele nao
-      e contado como otimo local.
+        "estrategia"
+        "vizinhanca"
+        "melhor_s"
+        "melhor_h"
+        "avaliacoes"
+        "orcamento" 
+        "reinicios"
+        "passos_melhoria"
+        "otimos_locais_distintos"
+        "quantidade_otimos_locais_distintos" 
+        "execucoes_com_otimo_local_completo"
+        "historico"
     """
     if estrategia not in ESTRATEGIAS_GREEDY:
         raise ValueError(
@@ -134,15 +126,8 @@ def greedy_descent(problema, estrategia="best", semente=None, orcamento=50_000):
 
 
 def validar_vizinhancas(problema):
-    """Valida os tres operadores e devolve seus tamanhos de vizinhanca.
-
-    Confere que cada movimento mantem uma permutacao valida, que nao gera
-    vizinhos duplicados e que o numero de movimentos bate com as formulas do
-    enunciado/codigo:
-        swap e 2opt: n(n-1)/2
-        insertion:   (n-1)^2
-
-    A vizinhanca que estava configurada originalmente e restaurada ao final.
+    """
+    Valida os tres operadores e devolve seus tamanhos de vizinhanca.
     """
     vizinhanca_original = problema.vizinhanca
     solucao = list(range(1, problema.n + 1))
@@ -183,3 +168,4 @@ def validar_vizinhancas(problema):
         problema.definir_vizinhanca(vizinhanca_original)
 
     return resultado
+
